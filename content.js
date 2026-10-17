@@ -52,7 +52,7 @@ cybersecurity: {
         ['military group photo.jpg', 'Group photo with military unit.', 1680, 1242]
       ],
     label: 'Experience', title: 'Accountability. Process. Follow-through.',
-    description: 'Military logistics and civilian operations shaped the way I approach documentation, responsibility, and risk.',
+    description: 'Military logistics and civilian operations shaped the way I Approach documentation, responsibility, and risk.',
     section: 'Transferable strengths',
     cards: [
       ['U.S. Army', 'Company Supply Sergeant / S4 Clerk at Fort Bliss, Texas, with Operation New Dawn support. Managed government property, sensitive equipment, and operational readiness procedures. Developed a deep understanding of accountability, documentation standards, and chain-of-command communication under pressure.'],
