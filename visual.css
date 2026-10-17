@@ -195,3 +195,6 @@ footer a { padding:10px 0; }
 @media (prefers-reduced-motion:reduce) {
   *,*::before,*::after { scroll-behavior:auto !important; transition:none !important; }
 }
+/* Center credential category headings above their card rows. */
+.view-credentials .credential-group > .group-title { text-align:center; }
+
