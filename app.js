@@ -3,22 +3,17 @@ const toggle = document.querySelector('.nav-toggle');
 const nav = document.querySelector('.site-nav');
 const escapeHTML = (value) => String(value).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-// Keep acronyms and brands; capitalize sentence starts even for short words.
+// Capitalize every heading word while preserving acronyms and brand spelling.
 function headingText(value) {
-  let previousEnd = 0;
-  let firstWord = true;
   return String(value).replace(/(?:[A-Z]\.){2,}|[A-Za-z]+(?:['’][A-Za-z]+)?/g, (word, offset, text) => {
-    const sentenceStart = firstWord || /[.!?]/.test(text.slice(previousEnd, offset));
-    firstWord = false;
-    previousEnd = offset + word.length;
     if (/^[A-Z]$/.test(word) && /\bPart\s+$/i.test(text.slice(0, offset))) return word;
     if (/[A-Z]/.test(word.slice(1))) return word;
-    return word.length < 3 && !sentenceStart ? word.toLowerCase() : word[0].toUpperCase() + word.slice(1);
+    return word[0].toUpperCase() + word.slice(1);
   });
 }
 
 function cardLink([, , href, label]) {
-  return href ? `<a href="${escapeHTML(href)}">${escapeHTML(label || 'Learn more')}</a>` : '';
+  return href ? `<a href="${escapeHTML(href)}">${escapeHTML(href.startsWith('mailto:') ? label : headingText(label || 'Learn more'))}</a>` : '';
 }
 
 function featureCard(item) {
@@ -38,7 +33,7 @@ function experienceCard(item) {
 
 function credentialCard(item) {
   const [title, description, href, label] = item;
-  return `<article class="credential-card"><h3>${escapeHTML(headingText(title))}</h3><p>${escapeHTML(description)}</p>${href ? `<a href="${escapeHTML(href)}" target="_blank" rel="noreferrer">${escapeHTML(label || 'View document')}<span class="sr-only"> (PDF, opens in a new tab)</span></a>` : ''}</article>`;
+  return `<article class="credential-card"><h3>${escapeHTML(headingText(title))}</h3><p>${escapeHTML(description)}</p>${href ? `<a href="${escapeHTML(href)}" target="_blank" rel="noreferrer">${escapeHTML(headingText(label || 'View document'))}<span class="sr-only"> (PDF, opens in a new tab)</span></a>` : ''}</article>`;
 }
 
 function pageImages(images) {
@@ -74,7 +69,7 @@ function credentialsContent(page) {
 }
 
 function contactCTA() {
-  return `<section class="section-band contact-band"><div><h2>Bring Accountability to The Next Challenge.</h2></div><a class="button primary" href="#/contact">Let's connect →</a></section>`;
+  return `<section class="section-band contact-band"><div><h2>Bring Accountability To The Next Challenge.</h2></div><a class="button primary" href="#/contact">Let's Connect →</a></section>`;
 }
 
 function photo([file, alt, width, height], eager = false) {
@@ -90,19 +85,19 @@ function cards(items, type = 'default') {
 function home() {
   return `<section class="hero section-band">
     <div class="hero-copy"><h1 tabindex="-1">Randy<br>Bautista</h1>
-    <p class="hero-role">Cybersecurity graduate · U.S. Army veteran · HomeLAB'r</p>
+    <p class="hero-role">Cybersecurity Graduate · U.S. Army Veteran · HomeLAB'r</p>
     <p class="hero-summary">My path combines military logistics, customer-facing operations, and hands-on infrastructure work. I am pursuing a B.S. in Cybersecurity Management and building toward opportunities in GRC, IT support, and junior security analysis.</p>
     <div class="hero-actions"><a class="button primary" href="#/projects">View Projects</a><a class="button" href="https://www.linkedin.com/in/randyebautista">LinkedIn</a><a class="button" href="https://bacano19.github.io/security-plus-study/">Security+ Study Site</a></div>
     </div>
     ${photo(['professional-headshot.jpg', 'Professional portrait of Randy Bautista.', 1050, 1400], true)}
     </section>
-    <section class="qualifications" aria-label="Qualifications at a glance"><div class="quick-stats"><div><span class="card-kicker">01 / Completed</span><strong>A.S. Cybersecurity</strong><span>American Military University</span></div><div><span class="card-kicker">02 / In progress</span><strong>B.S. Cybersecurity Management</strong><span>Expected December 31, 2026 · GPA 3.8</span></div><div><span class="card-kicker">03 / Professional development</span><strong>Security+ preparation</strong><span>Bootcamp recently started · Not yet certified</span></div></div></section>
-    <section class="section-band surface"><div class="section-heading"><h2>From Military Logistics to Cybersecurity.</h2><p class="intro">Military logistics taught me accountability. Civilian operations taught me to communicate under pressure. My HomeLAB gives me a hands-on way to understand the systems that governance, risk, and compliance programs protect.</p></div>${cards([
+    <section class="qualifications" aria-label="Qualifications at a glance"><div class="quick-stats"><div><span class="card-kicker">Completed</span><strong>A.S. Cybersecurity</strong><span>American Military University</span></div><div><span class="card-kicker">In Progress</span><strong>B.S. Cybersecurity Management</strong><span>Expected December 31, 2026 · GPA 3.8</span></div><div><span class="card-kicker">Professional Development</span><strong>Security+ Preparation</strong><span>Bootcamp recently started · Not yet certified</span></div></div></section>
+    <section class="section-band surface"><div class="section-heading"><h2>From Military Logistics To Cybersecurity.</h2><p class="intro">Military logistics taught me accountability. Civilian operations taught me to communicate under pressure. My HomeLAB gives me a hands-on way to understand the systems that governance, risk, and compliance programs protect.</p></div>${cards([
       ['Cybersecurity direction', 'Connecting technical decisions with organizational responsibility, risk, and evidence.', '#/cybersecurity', 'Explore cybersecurity'],
       ['Practical infrastructure', 'Building and documenting a personal environment for systems, security, and local AI practice.', '#/homelab', 'Explore the lab'],
       ['Experience and education', 'Military accountability, operational strengths, and continued academic development.', '#/experience', 'View experience']
     ], 'feature')}</section>
-    <section class="section-band"><div class="section-heading"><h2>Practical Work.<br>Continued Learning.</h2></div>${projectCards(portfolio.projects.cards.slice(0, 3))}<div class="hero-actions section-actions"><a class="button primary" href="#/projects">All projects →</a><a class="button" href="#/credentials">Education and credentials →</a></div></section>${contactCTA()}`;
+    <section class="section-band"><div class="section-heading"><h2>Practical Work.<br>Continued Learning.</h2></div>${projectCards(portfolio.projects.cards.slice(0, 3))}<div class="hero-actions section-actions"><a class="button primary" href="#/projects">All Projects →</a><a class="button" href="#/credentials">Education And Credentials →</a></div></section>${contactCTA()}`;
 }
 
 function setMenu(open) {
@@ -160,7 +155,7 @@ function render() {
     }
     main.innerHTML = `<div class="view view-${route}"><section id="${route}" class="section-band page-heading${headingImage ? ' with-photo' : ''}"><div><h1 tabindex="-1">${escapeHTML(headingText(page.title))}</h1><p class="section-intro">${escapeHTML(page.description)}</p></div>${headingImage}</section><section class="section-band surface"><div class="section-heading"><h2>${escapeHTML(headingText(page.section))}</h2></div>${content}</section></div>${route === 'contact' ? '' : contactCTA()}`;
   } else {
-    main.innerHTML = '<section class="section-band page-heading"><h1 tabindex="-1">Page Not Found</h1><p>Choose a view from the navigation or return home.</p><a class="button primary" href="#/">Return home</a></section>';
+    main.innerHTML = '<section class="section-band page-heading"><h1 tabindex="-1">Page Not Found</h1><p>Choose a view from the navigation or return home.</p><a class="button primary" href="#/">Return Home</a></section>';
   }
 
   document.title = `${isHome ? "Home" : page ? page.label : "Page not found"} | Randy Bautista`;
@@ -196,3 +191,4 @@ document.querySelector('.skip-link').addEventListener('click', (event) => { even
 window.matchMedia('(min-width: 1101px)').addEventListener('change', () => setMenu(false));
 window.addEventListener('hashchange', render);
 render();
+
